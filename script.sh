@@ -8,6 +8,7 @@ uses() {
     [ ! -z "${1}" ]
 }
 
+set -x 
 echo "$(pwd)"
 
 LAUNCHSETTINGS_FILES=$(find . -type f -iname "launchSettings.json")
