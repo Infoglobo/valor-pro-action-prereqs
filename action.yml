@@ -1,0 +1,15 @@
+name: valor-valor-pro-action-prereqs
+description: check application input variables
+author: valor-pro 
+branding:
+  icon: 'thumbs-up'
+  color: 'white'
+
+
+runs:
+  using: "composite"
+  steps:
+    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+      shell: bash 
+    - run: script.sh
+      shell: bash
