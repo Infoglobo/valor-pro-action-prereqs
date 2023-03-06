@@ -8,20 +8,20 @@ uses() {
     [ ! -z "${1}" ]
 }
 
-files=$(find . -type f -iname "launchSettings.json")
-first_file=$(echo "$files" | head -n 1)
+echo "$(pwd)"
 
-echo $first_file
+LAUNCHSETTINGS_FILES=$(find . -type f -iname "launchSettings.json")
+FIRST_LAUNCHSETTINGS=$(echo "$files" | head -n 1)
+
+echo $FIRST_LAUNCHSETTINGS
 
 SUCCESS=true
-if [ ! -z $first_file ]; then
+if [ ! -z $FIRST_LAUNCHSETTINGS ]; then
   APP_NAME=$(sed -n '0,/^ENTRYPOINT/s/.*"\([^"]*\)\.Api\.dll".*/\1/p' Dockerfile)
   ENV_PROPS=$(env)
   echo "$ENV_PROPS"
-  #jq -r .profiles.\"$APP_NAME\".environmentVariables $first_file
-  #jq '.profiles."Valor.Pro.Historical.Series".environmentVariables' $first_file 
-  #jq '.profiles."Valor.Pro.Historical.Series.Api".environmentVariables' ./src/valor.pro.historical.series.api/Properties/launchSettings.json
-  for O in $( jq -r ".profiles.\"$APP_NAME\".environmentVariables | keys[]" $first_file ); do
+
+  for O in $( jq -r ".profiles.\"$APP_NAME\".environmentVariables | keys[]" $FIRST_LAUNCHSETTINGS ); do
     #echo $row
     if [[ ! "$ENV_PROPS" =~ "$O" ]] ; then 
         echo "$O não encontrada" ;   
