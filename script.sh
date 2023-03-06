@@ -24,8 +24,10 @@ if [ ! -z $FIRST_LAUNCHSETTINGS ]; then
   for O in $( jq -r ".profiles.\"$APP_NAME\".environmentVariables | keys[]" $FIRST_LAUNCHSETTINGS ); do
     #echo $row
     if [[ ! "$ENV_PROPS" =~ "$O" ]] ; then 
-        echo "$O não encontrada" ;   
+        echo "** property $O não encontrada" ;   
         SUCCESS=false
+    else 
+        echo "property $O encontrada" ;   
     fi
   done
 fi
