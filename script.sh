@@ -64,7 +64,9 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
         echo "ENV_PROPS carregando das secrets do github $key " 
         ENV_PROPS="${ENV_PROPS}\n$key=$key"
     done 
-    ENV_PROPS="${ENV_PROPS}\n**FIM SECRETS**\n"
+    ENV_PROPS="${ENV_PROPS}\n**FIM SECRETS**"
+    echo "SHOW ENV_PROPS"
+    echo "$ENV_PROPS"
 
     FOLDER_REPO_NAME=$(pwd)
     PROPERTY_FILE="$FOLDER_REPO_NAME/enviroments/$AMBIENTE/cm.properties"
