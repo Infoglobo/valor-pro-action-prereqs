@@ -36,7 +36,7 @@ echo "$FIRST_LAUNCHSETTINGS"
 
 SUCCESS=true
 if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
-    ENV_PROPS=
+
 
  
 
@@ -66,8 +66,9 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
         echo "$ENV_PROPS"
         
     done 
-    ENV_PROPS="${ENV_PROPS}\n**FIM SECRETS**"
     echo "SHOW ENV_PROPS"
+    echo "$ENV_PROPS"
+    ENV_PROPS="${ENV_PROPS}\n**FIM SECRETS**"
     echo "$ENV_PROPS"
     echo "SHOW ENV_PROPS END"
     FOLDER_REPO_NAME=$(pwd)
