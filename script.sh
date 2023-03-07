@@ -63,6 +63,7 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
         key="${key/#${SECRETS_PREFIX}_/}"
         echo "ENV_PROPS carregando das secrets do github $key " 
         ENV_PROPS="${ENV_PROPS}\n$key=$key"
+        echo "$ENV_PROPS"
         
     done 
     ENV_PROPS="${ENV_PROPS}\n**FIM SECRETS**"
