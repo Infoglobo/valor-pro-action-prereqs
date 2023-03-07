@@ -29,17 +29,6 @@ if [ "$COUNT" -gt "1" ]; then
   exit 1
 fi
 
-FOLDER_REPO_NAME=$(pwd)
-PROPERTY_FILE="$FOLDER_REPO_NAME/enviroments/$AMBIENTE/cm.properties"
-addBlankLineToFile "$PROPERTY_FILE"
-
-ERRORS=$(grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*[^=]' | wc -l)
-
-if [ "$ERRORS" -gt "0" ]; then
-  echo "Existem erros no arquivo  $PROPERTY_FILE "
-  grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*[^=]' 
-  exit 1
-fi
 
 LAUNCHSETTINGS_FILES=$(find . -type f -iname "launchSettings.json")
 FIRST_LAUNCHSETTINGS=$(echo "$LAUNCHSETTINGS_FILES" | head -n 1)
@@ -65,6 +54,20 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
         AMBIENTE="main"
     fi  
     SECRETS_PREFIX=${SECRETS_PREFIX^^}
+
+
+    FOLDER_REPO_NAME=$(pwd)
+    PROPERTY_FILE="$FOLDER_REPO_NAME/enviroments/$AMBIENTE/cm.properties"
+    addBlankLineToFile "$PROPERTY_FILE"
+
+    ERRORS=$(grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*[^=]' | wc -l)
+
+    if [ "$ERRORS" -gt "0" ]; then
+    echo "Existem erros no arquivo  $PROPERTY_FILE "
+    grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*[^=]' 
+    exit 1
+    fi
+
 
     ENV_PROPS=""
     #env | grep ^"$SECRETS_PREFIX" | 
