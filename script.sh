@@ -10,6 +10,7 @@ uses() {
 
 set -x 
 echo "$(pwd)"
+ls -lha 
 
 COUNT=$( find . -type f -iname "launchSettings.json" | wc -l )
 
@@ -36,9 +37,10 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
     fi 
     
     PROPERTY_FILE="$FOLDER_REPO_NAME/enviroments/$AMBIENTE/cm.properties"
-
-
+    cat $PROPERTY_FILE
+    # verifica se o arquivo existe e não está vazio e carrega as propriedades
     if  [ -s "$PROPERTY_FILE" ]; then
+        echo "carregando as propriedades do arquivo $PROPERTY_FILE"
         while IFS='=' read -r k v; do
             ENV_PROPS="${ENV_PROPS}\n$k=$v"
         done < $PROPERTY_FILE
