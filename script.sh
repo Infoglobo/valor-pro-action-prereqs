@@ -28,7 +28,9 @@ SUCCESS=true
 if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
   ENV_PROPS=$(env)
   #echo "$ENV_PROPS"
-
+  #remove caracateres invalidos para o json
+  sed -i '/^[[:space:]]*\/\/.*/d'  "$FIRST_LAUNCHSETTINGS"
+  
   for O in $( jq -r '.. | select(.environmentVariables?).environmentVariables | keys[]' "$FIRST_LAUNCHSETTINGS" ); do
     #echo $row
     if [[ ! "$ENV_PROPS" =~ $O ]] ; then 
