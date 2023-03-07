@@ -29,6 +29,18 @@ if [ "$COUNT" -gt "1" ]; then
   exit 1
 fi
 
+FOLDER_REPO_NAME=$(pwd)
+PROPERTY_FILE="$FOLDER_REPO_NAME/enviroments/$AMBIENTE/cm.properties"
+addBlankLineToFile "$PROPERTY_FILE"
+
+ERRORS-$(grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*[^=]' | wc -l)
+
+if [ "$ERRORS" -gt "0" ]; then
+  echo "Existem erros no arquivo  $PROPERTY_FILE "
+  grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*[^=]' 
+  exit 1
+fi
+
 LAUNCHSETTINGS_FILES=$(find . -type f -iname "launchSettings.json")
 FIRST_LAUNCHSETTINGS=$(echo "$LAUNCHSETTINGS_FILES" | head -n 1)
 
@@ -36,9 +48,6 @@ echo "$FIRST_LAUNCHSETTINGS"
 
 SUCCESS=true
 if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
-
-
- 
 
     AMBIENTE=${GITHUB_REF_NAME##*/}
     AMBIENTE=${AMBIENTE,,}
@@ -73,7 +82,7 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
 
     while IFS='=' read -r key value; do
         key="${key/#${SECRETS_PREFIX}_/}"
-        echo "ENV_PROPS carregando do arquivo $key $PROPERTY_FILE" 
+        echo "ENV_PROPS carregando das secrets do GITHUB $key" 
         ENV_PROPS="${ENV_PROPS}\n$key=$value"
     done < temp.txt    
     
@@ -82,9 +91,7 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
     ENV_PROPS="${ENV_PROPS}\n**FIM SECRETS**"
     echo "$ENV_PROPS"
     echo "SHOW ENV_PROPS END"
-    FOLDER_REPO_NAME=$(pwd)
-    PROPERTY_FILE="$FOLDER_REPO_NAME/enviroments/$AMBIENTE/cm.properties"
-    addBlankLineToFile "$PROPERTY_FILE"
+
     #cat $PROPERTY_FILE
     # verifica se o arquivo existe e não está vazio e carrega as propriedades
     if  [ -s "$PROPERTY_FILE" ]; then
