@@ -57,17 +57,18 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
     fi  
     SECRETS_PREFIX=${SECRETS_PREFIX^^}
 
-
+    ENV_PROPS=""
     env | grep ^"$SECRETS_PREFIX" | 
     while IFS='=' read -r key value; do
         key="${key/#${SECRETS_PREFIX}_/}"
         echo "ENV_PROPS carregando das secrets do github $key " 
         ENV_PROPS="${ENV_PROPS}\n$key=$key"
+        
     done 
     ENV_PROPS="${ENV_PROPS}\n**FIM SECRETS**"
     echo "SHOW ENV_PROPS"
     echo "$ENV_PROPS"
-
+    echo "SHOW ENV_PROPS END"
     FOLDER_REPO_NAME=$(pwd)
     PROPERTY_FILE="$FOLDER_REPO_NAME/enviroments/$AMBIENTE/cm.properties"
     addBlankLineToFile "$PROPERTY_FILE"
@@ -84,6 +85,7 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
 
     echo "SHOW ENV_PROPS"
     echo "$ENV_PROPS"
+    echo "SHOW ENV_PROPS END"    
     #remove caracateres invalidos para o json
     sed -i '/^[[:space:]]*\/\/.*/d'  "$FIRST_LAUNCHSETTINGS"
 
