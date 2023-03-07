@@ -8,7 +8,15 @@ uses() {
     [ ! -z "${1}" ]
 }
 
-set -x 
+function addBlankLineToFile() {
+    FILE=$1
+    if  [ ! -f "$FILE" ]; then
+        touch  "$FILE"
+    fi
+    sed -i -e '$a\' "$FILE"
+}
+
+#set -x 
 echo "$(pwd)"
 ls -lha 
 
@@ -58,6 +66,7 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
 
     FOLDER_REPO_NAME=$(pwd)
     PROPERTY_FILE="$FOLDER_REPO_NAME/enviroments/$AMBIENTE/cm.properties"
+    addBlankLineToFile "$PROPERTY_FILE"
     cat $PROPERTY_FILE
     # verifica se o arquivo existe e não está vazio e carrega as propriedades
     if  [ -s "$PROPERTY_FILE" ]; then
