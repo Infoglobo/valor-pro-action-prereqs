@@ -62,9 +62,9 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
     while IFS='=' read -r key value; do
         key="${key/#${SECRETS_PREFIX}_/}"
         echo "ENV_PROPS carregando das secrets do github $key " 
-        ENV_PROPS="${ENV_PROPS}\n$key=$value"
+        ENV_PROPS="${ENV_PROPS}\n$key=$key"
     done 
-    ENV_PROPS="${ENV_PROPS}\n**"
+    ENV_PROPS="${ENV_PROPS}\n**FIM SECRETS**\N"
 
     FOLDER_REPO_NAME=$(pwd)
     PROPERTY_FILE="$FOLDER_REPO_NAME/enviroments/$AMBIENTE/cm.properties"
