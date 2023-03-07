@@ -96,6 +96,7 @@ fi
 
 
 if [ ! "$SUCCESS" ] ; then
-    echo "falha"
+    echo "check prereqs falha"
     exit 1;
 fi
+echo "check prereqs sucesso"
