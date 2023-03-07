@@ -11,20 +11,27 @@ uses() {
 set -x 
 echo "$(pwd)"
 
-LAUNCHSETTINGS_FILES=$(find . -type f -iname "launchSettings.json")
-FIRST_LAUNCHSETTINGS=$(echo "$files" | head -n 1)
+COUNT=$( find . -type f -iname "launchSettings.json" | wc -l )
 
-echo $FIRST_LAUNCHSETTINGS
+if [ "$COUNT" -gt "1" ]; then
+  echo "Existe mais de um arquivo launchSettings.json no projeto"
+  find . -type f -iname "launchSettings.json"
+  exit 1
+fi
+
+LAUNCHSETTINGS_FILES=$(find . -type f -iname "launchSettings.json")
+FIRST_LAUNCHSETTINGS=$(echo "$LAUNCHSETTINGS_FILES" | head -n 1)
+
+echo "$FIRST_LAUNCHSETTINGS"
 
 SUCCESS=true
-if [ ! -z $FIRST_LAUNCHSETTINGS ]; then
-  APP_NAME=$(sed -n '0,/^ENTRYPOINT/s/.*"\([^"]*\)\.Api\.dll".*/\1/p' Dockerfile)
+if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
   ENV_PROPS=$(env)
-  echo "$ENV_PROPS"
+  #echo "$ENV_PROPS"
 
-  for O in $( jq -r ".profiles.\"$APP_NAME\".environmentVariables | keys[]" $FIRST_LAUNCHSETTINGS ); do
+  for O in $( jq -r '.. | select(.environmentVariables?).environmentVariables | keys[]' "$FIRST_LAUNCHSETTINGS" ); do
     #echo $row
-    if [[ ! "$ENV_PROPS" =~ "$O" ]] ; then 
+    if [[ ! "$ENV_PROPS" =~ $O ]] ; then 
         echo "** property $O não encontrada" ;   
         SUCCESS=false
     else 
