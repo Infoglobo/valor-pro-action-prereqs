@@ -63,9 +63,9 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
     ERRORS=$(grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*[^=]' | wc -l)
 
     if [ "$ERRORS" -gt "0" ]; then
-    echo "Existem erros no arquivo  $PROPERTY_FILE "
-    grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*[^=]' 
-    exit 1
+        echo "Existem erros no arquivo  $PROPERTY_FILE "
+        grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*[^=]' 
+        exit 1
     fi
 
 
