@@ -35,7 +35,7 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
     if [ "$GITHUB_REF_NAME" == "master" ] || [ "$GITHUB_REF_NAME" == "main"  ] ; then
         AMBIENTE="main"
     fi 
-    
+    FOLDER_REPO_NAME=$(pwd)
     PROPERTY_FILE="$FOLDER_REPO_NAME/enviroments/$AMBIENTE/cm.properties"
     cat $PROPERTY_FILE
     # verifica se o arquivo existe e não está vazio e carrega as propriedades
