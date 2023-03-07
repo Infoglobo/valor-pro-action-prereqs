@@ -70,8 +70,9 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
 
     env | grep ^"$SECRETS_PREFIX" > temp.txt
     cat temp.txt
-    
+
     while IFS='=' read -r key value; do
+        key="${key/#${SECRETS_PREFIX}_/}"
         echo "ENV_PROPS carregando do arquivo $key $PROPERTY_FILE" 
         ENV_PROPS="${ENV_PROPS}\n$key=$value"
     done < temp.txt    
