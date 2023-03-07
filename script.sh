@@ -80,7 +80,7 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
 
 
 
-    #echo "$ENV_PROPS"
+    echo "$ENV_PROPS"
     #remove caracateres invalidos para o json
     sed -i '/^[[:space:]]*\/\/.*/d'  "$FIRST_LAUNCHSETTINGS"
 
