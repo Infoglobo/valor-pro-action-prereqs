@@ -64,6 +64,7 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
         echo "ENV_PROPS carregando das secrets do github $key " 
         ENV_PROPS="${ENV_PROPS}\n$key=$value"
     done 
+    ENV_PROPS="${ENV_PROPS}\n**"
 
     FOLDER_REPO_NAME=$(pwd)
     PROPERTY_FILE="$FOLDER_REPO_NAME/enviroments/$AMBIENTE/cm.properties"
@@ -79,7 +80,7 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
     fi
 
 
-    echo "ENV_PROPS"
+    echo "SHOW ENV_PROPS"
     echo "$ENV_PROPS"
     #remove caracateres invalidos para o json
     sed -i '/^[[:space:]]*\/\/.*/d'  "$FIRST_LAUNCHSETTINGS"
