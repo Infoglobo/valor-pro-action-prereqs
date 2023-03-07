@@ -61,19 +61,19 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
     env | grep ^"$SECRETS_PREFIX" | 
     while IFS='=' read -r key value; do
         key="${key/#${SECRETS_PREFIX}_/}"
-        echo "ENV_PROPS carregando $key das secrets do github" 
+        echo "ENV_PROPS carregando das secrets do github $key " 
         ENV_PROPS="${ENV_PROPS}\n$key=$value"
     done 
 
     FOLDER_REPO_NAME=$(pwd)
     PROPERTY_FILE="$FOLDER_REPO_NAME/enviroments/$AMBIENTE/cm.properties"
     addBlankLineToFile "$PROPERTY_FILE"
-    cat $PROPERTY_FILE
+    #cat $PROPERTY_FILE
     # verifica se o arquivo existe e não está vazio e carrega as propriedades
     if  [ -s "$PROPERTY_FILE" ]; then
         echo "carregando as propriedades do arquivo $PROPERTY_FILE"
         while IFS='=' read -r key value; do
-            echo "ENV_PROPS carregando $key do arquivo  $PROPERTY_FILE" 
+            echo "ENV_PROPS carregando do arquivo $key $PROPERTY_FILE" 
             ENV_PROPS="${ENV_PROPS}\n$key=$value"
         done < $PROPERTY_FILE
     fi
@@ -96,7 +96,7 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
 fi
 
 
-if [ ! "$SUCCESS" ] ; then
+if [ "$SUCCESS" = false ] ; then
     echo "check prereqs falha"
     exit 1;
 fi
