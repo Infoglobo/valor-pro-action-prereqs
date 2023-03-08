@@ -65,7 +65,9 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
     #substitui ' = ' pr '='
     sed -r -i -e 's/\s=\s/=/g' $PROPERTY_FILE
 
-    ERRORS=$(grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*[^=]' | wc -l)
+    ##ERRORS=$(grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*[^=]' | wc -l)
+    #permite propriedades sem valores
+    ERRORS=$(grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*' | wc -l)
 
     if [ "$ERRORS" -gt "0" ]; then
         echo "Existem erros no arquivo  $PROPERTY_FILE "
