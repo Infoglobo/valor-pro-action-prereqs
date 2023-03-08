@@ -55,28 +55,43 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
     fi  
     SECRETS_PREFIX=${SECRETS_PREFIX^^}
 
+    ENV_PROPS=""
 
     FOLDER_REPO_NAME=$(pwd)
     PROPERTY_FILE="$FOLDER_REPO_NAME/enviroments/$AMBIENTE/cm.properties"
-    addBlankLineToFile "$PROPERTY_FILE"
 
-    #remove comentários
-    sed -r -i -e '/^\s*$|^#/d' $PROPERTY_FILE
-    #substitui ' = ' pr '='
-    sed -r -i -e 's/\s=\s/=/g' $PROPERTY_FILE
+    #cat $PROPERTY_FILE
+    # verifica se o arquivo existe e não está vazio e carrega as propriedades
+    if  [ -s "$PROPERTY_FILE" ]; then
+        addBlankLineToFile "$PROPERTY_FILE"
 
-    ##ERRORS=$(grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*[^=]' | wc -l)
-    #permite propriedades sem valores
-    ERRORS=$(grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*' | wc -l)
+        #remove comentários
+        sed -r -i -e '/^\s*$|^#/d' $PROPERTY_FILE
+        #substitui ' = ' pr '='
+        sed -r -i -e 's/\s=\s/=/g' $PROPERTY_FILE
 
-    if [ "$ERRORS" -gt "0" ]; then
-        echo "Existem erros no arquivo  $PROPERTY_FILE "
-        grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*[^=]' 
-        exit 1
+        ##ERRORS=$(grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*[^=]' | wc -l)
+        #permite propriedades sem valores
+        ERRORS=$(grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*' | wc -l)
+
+        if [ "$ERRORS" -gt "0" ]; then
+            echo "Existem erros no arquivo  $PROPERTY_FILE "
+            grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*[^=]' 
+            exit 1
+        fi
+
+        echo "carregando as propriedades do arquivo $PROPERTY_FILE"
+        while IFS='=' read -r key value; do
+            echo "ENV_PROPS carregando do arquivo $key $PROPERTY_FILE" 
+            ENV_PROPS="${ENV_PROPS}\n$key=$value"
+        done < $PROPERTY_FILE
+
+        echo "SHOW ENV_PROPS"
+        echo "$ENV_PROPS"
+        echo "SHOW ENV_PROPS END"    
+
     fi
 
-
-    ENV_PROPS=""
     #env | grep ^"$SECRETS_PREFIX" | 
     #while IFS='=' read -r key value; do
 #
@@ -102,20 +117,7 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
     echo "$ENV_PROPS"
     echo "SHOW ENV_PROPS END"
 
-    #cat $PROPERTY_FILE
-    # verifica se o arquivo existe e não está vazio e carrega as propriedades
-    if  [ -s "$PROPERTY_FILE" ]; then
-        echo "carregando as propriedades do arquivo $PROPERTY_FILE"
-        while IFS='=' read -r key value; do
-            echo "ENV_PROPS carregando do arquivo $key $PROPERTY_FILE" 
-            ENV_PROPS="${ENV_PROPS}\n$key=$value"
-        done < $PROPERTY_FILE
-    fi
 
-
-    echo "SHOW ENV_PROPS"
-    echo "$ENV_PROPS"
-    echo "SHOW ENV_PROPS END"    
     #remove caracateres invalidos para o json
     sed -i '/^[[:space:]]*\/\/.*/d'  "$FIRST_LAUNCHSETTINGS"
 
