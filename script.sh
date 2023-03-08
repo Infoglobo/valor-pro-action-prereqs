@@ -60,6 +60,11 @@ if [ ! -z "$FIRST_LAUNCHSETTINGS" ]; then
     PROPERTY_FILE="$FOLDER_REPO_NAME/enviroments/$AMBIENTE/cm.properties"
     addBlankLineToFile "$PROPERTY_FILE"
 
+    #remove comentários
+    sed -r -i -e '/^\s*$|^#/d' $PROPERTY_FILE
+    #substitui ' = ' pr '='
+    sed -r -i -e 's/\s=\s/=/g' $PROPERTY_FILE
+
     ERRORS=$(grep -vE '^$' $PROPERTY_FILE | grep -vE '^\w[^=]*=.*[^=]' | wc -l)
 
     if [ "$ERRORS" -gt "0" ]; then
