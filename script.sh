@@ -2,6 +2,8 @@
 set -e
 set -x
 
+echo "Running action valor-pro-action-prereqs"
+
 function log() {
     S=$1
     echo $S | sed 's/./& /g'
